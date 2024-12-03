@@ -1,0 +1,22 @@
+(defun insertion-sort-imperative (lst)
+  (let ((sorted (copy-list lst)))
+    (do ((i 1 (1+ i)))  
+        ((>= i (length sorted)))  
+      (let ((key (nth i sorted)) 
+            (j (1- i)))          
+        (do ()
+            ((or (< j 0) (<= (nth j sorted) key)))
+          (setf (nth (1+ j) sorted) (nth j sorted)) 
+          (decf j)) 
+        (setf (nth (1+ j) sorted) key)))
+    sorted))
+
+(defun check-sorting (name func input expected)
+  (format t "~:[FAILED~;passed~] ~a~%"
+          (equal (funcall func input) expected)
+          name))
+
+(defun test-sorting ()
+  (check-sorting "test 1" #'insertion-sort-imperative '(3 1 4 1 5 9) '(1 1 3 4 5 9))
+  (check-sorting "test 2" #'insertion-sort-imperative '(1 7 4 2 8 5 9) '(1 2 4 5 7 8 9))
+  (check-sorting "test 3" #'insertion-sort-imperative '(1 2 3) '(1 2 3)))
